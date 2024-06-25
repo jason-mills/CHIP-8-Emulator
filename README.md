@@ -4,7 +4,7 @@
 The goal of this project was to create a CHIP-8 Emulator in C++. While completing this project goal I wanted to learn to use CMake and SDL. 
 
 ## Struggles
-The list of struggles with this project is probably too large to count. Most of those were unrelated to the core implementation details of the project. Understanding the way that SDL operates was the largest hurdle to the project. In particular my desire to have a configurable window size was a time sink. Once I understood that SDL autoscales the textures to the window that problem was solved. The decision to use multiple CMakeList files was one that I made based on various recommendations I found. I like the way that it allows you to specify compilation details for each individual module. I'm going to continue this until I find a compelling reason not to. 
+The list of struggles with this project is probably too large to count. Most of those were unrelated to the core implementation details of the project. Understanding the way that SDL operates was the largest hurdle to the project. In particular my desire to have a configurable window size was a time sink. Once I understood that SDL auto scales the textures to the window that problem was solved. The decision to use multiple CMakeList files was one that I made based on various recommendations I found. I like the way that it allows you to specify compilation details for each individual module. I'm going to continue this until I find a compelling reason not to. 
 
 ## Summary
 This project is complete to my liking. There are many other things that I could do to modify it. A non-exhaustive list includes: precise instruction timings, debugging the window-size time difference, adding different keypad layouts, and adding a CHIP-8 snapshot function to the filemanager. That said, this emulator passed the BonCoder/BestCoder test and Corax89's test which makes me feel that it is at least reasonably complete.
@@ -35,7 +35,7 @@ $ ./CHIP-8-Emulator -help
 ## References
 These are the general resources that I used to complete this project.
 
-I used this guide as my primary resource for building the project. I followed most of the reccomendations that this article made.
+I used this guide as my primary resource for building the project. I followed most of the recomendations that this article made.
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 
 This is where I found the BestCoder CHIP-8 test rom.
