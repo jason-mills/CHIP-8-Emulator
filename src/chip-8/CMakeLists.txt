@@ -1,0 +1,16 @@
+add_library(chip-8)
+target_sources(chip-8
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/chip-8.cpp
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/chip-8.hpp
+)
+target_include_directories(chip-8
+    PRIVATE
+        ../display
+        ../filemanager
+        ../keypad
+        ../fonts
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}
+)

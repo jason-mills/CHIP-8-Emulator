@@ -1,0 +1,11 @@
+add_library(filemanager)
+target_sources(filemanager
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/filemanager.cpp
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/filemanager.hpp
+)
+target_include_directories(filemanager
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}
+)
