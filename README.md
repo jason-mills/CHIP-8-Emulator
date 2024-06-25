@@ -35,7 +35,7 @@ $ ./CHIP-8-Emulator -help
 ## References
 These are the general resources that I used to complete this project.
 
-I used this guide as my primary resource for building the project. I followed most of the recomendations that this article made.
+I used this guide as my primary resource for building the project. I followed most of the recomendations that this article made.__
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 
 This is where I found the BestCoder CHIP-8 test rom.
