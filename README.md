@@ -27,7 +27,7 @@ $ ./CHIP-8-Emulator -p <filename>
 ```
 
 ### Help
-The emulator has a pretty reasonable set of default settings. However, if you want to run programs in a way that is non-default the help section.
+The emulator has a pretty reasonable set of default settings. However, if you want to run programs in a way that is non-default see the help section.
 ```
 $ ./CHIP-8-Emulator -help
 ```
