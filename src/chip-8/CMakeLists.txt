@@ -8,9 +8,9 @@ target_sources(chip-8
 target_include_directories(chip-8
     PRIVATE
         ../display
-        ../filemanager
         ../keypad
-        ../fonts
+        ../beeper
+        ../filemanager
     PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}
 )

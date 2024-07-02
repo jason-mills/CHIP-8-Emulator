@@ -2,14 +2,15 @@
 
 #include "fonts.hpp"
 #include "display.hpp"
-#include "filemanager.hpp"
 #include "keypad.hpp"
+#include "beeper.hpp"
+#include "filemanager.hpp"
 
 #include <stack>
 
 class Chip8{
 public:
-    Chip8(Display* aDisplay, Keypad* aKeypad, std::string alternativeFontPath);
+    Chip8(Display* aDisplay, Keypad* aKeypad, Beeper* aBeeper, std::string alternativeFontPath);
 
     bool loadFont();
     bool loadProgram(std::string programPath);
@@ -17,6 +18,7 @@ public:
     uint16_t fetch();
     void execute();
     void updateTimers();
+    void playSound();
 
 private:
     DefaultFont defaultFont;
@@ -24,6 +26,7 @@ private:
 
     Display* display;
     Keypad* keypad;
+    Beeper* beeper;
     FileManager fileManager;
 
     std::stack<uint16_t> stack;

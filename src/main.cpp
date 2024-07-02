@@ -4,11 +4,8 @@
 #include "help.hpp"
 
 #include <chrono>
-#include <functional>
 #include <getopt.h>
 #include <iostream>
-#include <unordered_map>
-#include <vector>
 
 int main(int argc, char* argv[]){
     int windowWidth = 0;
@@ -68,7 +65,8 @@ int main(int argc, char* argv[]){
 
     Keypad keypad;
     Display display(&keypad, windowWidth);
-    Chip8 chip8(&display, &keypad, fontPath);
+    Beeper beeper;
+    Chip8 chip8(&display, &keypad, &beeper, fontPath);
     chip8.loadProgram(programPath);
 
     using namespace std::chrono;
@@ -92,9 +90,11 @@ int main(int argc, char* argv[]){
             // both the display and the clock registers of chip8 update at the same rate of 60 times per second
             display.update();
             chip8.updateTimers();
+            chip8.playSound();
 
             frameStart = system_clock::now();
         }
+
     }
 
     return 0;

@@ -57,6 +57,7 @@ void Display::processEvents(){
             }
             case SDL_KEYUP:{
                 keypad->handleKeypress(event, false);
+                keypad->handleKeyup(event);
                 break;
             }
         }

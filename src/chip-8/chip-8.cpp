@@ -1,6 +1,6 @@
 #include "chip-8.hpp"
 
-Chip8::Chip8(Display* aDisplay, Keypad* aKeypad, std::string alternativeFontPath) : display(aDisplay), keypad(aKeypad), alternativeFontPath(alternativeFontPath) {
+Chip8::Chip8(Display* aDisplay, Keypad* aKeypad, Beeper* aBeeper, std::string alternativeFontPath) : display(aDisplay), keypad(aKeypad), beeper(aBeeper), alternativeFontPath(alternativeFontPath) {
     if(!loadFont()){
         throw "Could not load font sprites";
     }
@@ -111,72 +111,74 @@ void Chip8::execute(){
                 }
                 case 0x1:{
                     varRegisters[secondNible] |= varRegisters[thirdNible];
+                    varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0x2:{
                     varRegisters[secondNible] &= varRegisters[thirdNible];
+                    varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0x3:{
                     varRegisters[secondNible] ^= varRegisters[thirdNible];
+                    varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0x4:{
-                    if(varRegisters[secondNible] > 0 && varRegisters[thirdNible] > 0xFF - varRegisters[secondNible]){
-                        varRegisters[0xF] = 0x1;
-                    }
+                    bool overflow = false;
+                    if(varRegisters[secondNible] > 0 && varRegisters[thirdNible] > 0xFF - varRegisters[secondNible]) overflow = true;
+                    
                     varRegisters[secondNible] += varRegisters[thirdNible];
 
+                    if(overflow) varRegisters[0xF] = 0x1;
+                    else varRegisters[0xF] = 0x0;
+                    
                     break;
                 }
                 case 0x5:{
-                    if(varRegisters[secondNible] > varRegisters[thirdNible]){
-                        varRegisters[0xF] = 0x1;
-                    }
-                    else{
-                        varRegisters[0xF] = 0x0;
-                    }
+                    bool overflow = false;
+                    if(varRegisters[secondNible] >= varRegisters[thirdNible]) overflow = true;
 
                     varRegisters[secondNible] -= varRegisters[thirdNible];
+
+                    if(overflow) varRegisters[0xF] = 0x1;
+                    else varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0x6:{
-                    if(varRegisters[secondNible] & 0x01){
-                        varRegisters[0xF] = 0x1;
-                    }
-                    else{
-                        varRegisters[0XF] = 0X0;
-                    }
+                    uint8_t out = varRegisters[secondNible] & 0x01;
                     
+                    varRegisters[secondNible] = varRegisters[thirdNible];
                     varRegisters[secondNible] >>= 1;
+
+                    if(out) varRegisters[0xF] = 0x1;
+                    else varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0x7:{
-                    if(varRegisters[thirdNible] > varRegisters[secondNible]){
-                        varRegisters[0xF] = 0x1;
-                    }
-                    else{
-                        varRegisters[0xF] = 0x0;
-                    }
+                    bool overflow = false;
+                    if(varRegisters[thirdNible] >= varRegisters[secondNible]) overflow = true;
 
                     varRegisters[secondNible] = varRegisters[thirdNible] - varRegisters[secondNible];
+
+                    if(overflow) varRegisters[0xF] = 0x1;
+                    else varRegisters[0xF] = 0x0;
 
                     break;
                 }
                 case 0xE:{
-                    if(varRegisters[secondNible] & 0x80){
-                        varRegisters[0xF] = 0x1;
-                    }
-                    else{
-                        varRegisters[0XF] = 0X0;
-                    }
-
+                    uint8_t out = varRegisters[secondNible] & 0x80;
+                    
+                    varRegisters[secondNible] = varRegisters[thirdNible];
                     varRegisters[secondNible] <<= 1;
+
+                    if(out) varRegisters[0xF] = 0x1;
+                    else varRegisters[0xF] = 0x0;
 
                     break;
                 }
@@ -197,7 +199,7 @@ void Chip8::execute(){
             break;
         }
         case 0xB:{
-            pcRegister = immediateAddress + varRegisters[secondNible];
+            pcRegister = immediateAddress + varRegisters[0x0];
 
             break;
         }
@@ -262,13 +264,16 @@ void Chip8::execute(){
                 }
                 case 0xA:{
                     bool pressed = false;
+
                     for(int i = 0; i < 0xF; i++){
-                        if(keypad->isPressed(i)){
+                        if(keypad->beenPressed(i)){
                             varRegisters[secondNible] = i;
+
                             pressed = true;
                             break;
                         }
                     }
+                    
                     if(!pressed){
                         pcRegister -= 2;
                     }
@@ -292,14 +297,16 @@ void Chip8::execute(){
                 }
                 case 0x55:{
                     for(int i = 0; i <= secondNible; i++){
-                        memory[iRegister + i] = varRegisters[i];
+                        memory[iRegister] = varRegisters[i];
+                        iRegister++;
                     }
 
                     break;
                 }
                 case 0x65:{
                     for(int i = 0; i <= secondNible; i++){
-                        varRegisters[i] = memory[iRegister + i];
+                        varRegisters[i] = memory[iRegister];
+                        iRegister++;
                     }
                     
                     break;
@@ -317,5 +324,14 @@ void Chip8::updateTimers(){
     }
     if(soundTimer){
         soundTimer--;
+    }
+}
+
+void Chip8::playSound(){
+    if(soundTimer){
+        beeper->play();
+    }
+    else{
+        beeper->stop();
     }
 }
