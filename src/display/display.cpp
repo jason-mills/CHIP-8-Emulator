@@ -52,11 +52,10 @@ void Display::processEvents(){
                 break;
             }
             case SDL_KEYDOWN:{
-                keypad.handleKeypress(event, true);
+                keypad.handleKeydown(event);
                 break;
             }
             case SDL_KEYUP:{
-                keypad.handleKeypress(event, false);
                 keypad.handleKeyup(event);
                 break;
             }

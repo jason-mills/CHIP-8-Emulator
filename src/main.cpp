@@ -93,6 +93,7 @@ int main(int argc, char* argv[]){
         if(duration_cast<system_clock::duration>(system_clock::now() - frameStart) >= fpsLimit){
             // both the display and the clock registers of chip8 update at the same rate of 60 times per second
             display.update();
+            keypad.updatePrevious();
             chip8.updateTimers();
             chip8.playSound();
 

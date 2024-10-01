@@ -240,7 +240,7 @@ void Chip8::execute(){
         }
         case 0xF:{
             switch(secondByte){
-                case 0x7:{
+                case 0x07:{
                     varRegisters[secondNibble] = delayTimer;
                     break;
                 }
@@ -262,7 +262,7 @@ void Chip8::execute(){
 
                     break;
                 }
-                case 0xA:{
+                case 0x0A:{
                     bool pressed = false;
 
                     for(uint8_t i = 0; i < 0xF; i++){
@@ -274,7 +274,7 @@ void Chip8::execute(){
                         }
                     }
                     
-                    if(!pressed){
+                    if(!pressed || keypad.isPressed(varRegisters[secondNibble])){
                         pcRegister -= 2;
                     }
 

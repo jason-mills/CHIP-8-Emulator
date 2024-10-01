@@ -13,86 +13,86 @@
 // ASDF
 // ZXCV
 
-void Keypad::handleKeypress(SDL_Event event, bool pressed){
+void Keypad::handleKeydown(SDL_Event event){
     switch(event.key.keysym.sym){
         // 1 key to 1 keypad
         case SDLK_1: {
-            buttons[1] = pressed;
+            current[1] = true;
             break;
         }
         // 2 key to 2 keypad
         case SDLK_2: {
-            buttons[2] = pressed;
+            current[2] = true;
             break;
         }
         // 3 key to 3 keypad
         case SDLK_3: {
-            buttons[3] = pressed;
+            current[3] = true;
             break;
         }
         // 4 key to C keypad
         case SDLK_4: {
-            buttons[12] = pressed;
+            current[12] = true;
             break;
         }
         // Q key to 4 keypad
         case SDLK_q: {
-            buttons[4] = pressed;
+            current[4] = true;
             break;
         }
         // W key to 5 keypad
         case SDLK_w: {
-            buttons[5] = pressed;
+            current[5] = true;
             break;
         }
         // E key to 6 keypad
         case SDLK_e: {
-            buttons[6] = pressed;
+            current[6] = true;
             break;
         }
         // R key to D keypad
         case SDLK_r: {
-            buttons[13] = pressed;
+            current[13] = true;
             break;
         }
         // A key to 7 keypad
         case SDLK_a: {
-            buttons[7] = pressed;
+            current[7] = true;
             break;
         }
         // S key to 8 keypad
         case SDLK_s: {
-            buttons[8] = pressed;
+            current[8] = true;
             break;
         }
         // D key to 9 keypad
         case SDLK_d: {
-            buttons[9] = pressed;
+            current[9] = true;
             break;
         }
         // F key to E keypad
         case SDLK_f: {
-            buttons[14] = pressed;
+            current[14] = true;
             break;
         }
         // Z key to A keypad
         case SDLK_z: {
-            buttons[10] = pressed;
+            current[10] = true;
             break;
         }
         // X key to 0 keypad
         case SDLK_x: {
-            buttons[0] = pressed;
+            current[0] = true;
             break;
         }
         // C key to B keypad
         case SDLK_c: {
-            buttons[11] = pressed;
+            current[11] = true;
             break;
         }
         // V key to F keypad
         case SDLK_v: {
-            buttons[15] = pressed;
+            current[15] = true;
             break;
         }
     }
@@ -102,94 +102,99 @@ void Keypad::handleKeyup(SDL_Event event){
     switch(event.key.keysym.sym){
         // 1 key to 1 keypad
         case SDLK_1: {
-            pressed[1] = true;
+            current[1] = false;
             break;
         }
         // 2 key to 2 keypad
         case SDLK_2: {
-            pressed[2] = true;
+            current[2] = false;
             break;
         }
         // 3 key to 3 keypad
         case SDLK_3: {
-            pressed[3] = true;
+            current[3] = false;
             break;
         }
         // 4 key to C keypad
         case SDLK_4: {
-            pressed[12] = true;
+            current[12] = false;
             break;
         }
         // Q key to 4 keypad
         case SDLK_q: {
-            pressed[4] = true;
+            current[4] = false;
             break;
         }
         // W key to 5 keypad
         case SDLK_w: {
-            pressed[5] = true;
+            current[5] = false;
             break;
         }
         // E key to 6 keypad
         case SDLK_e: {
-            pressed[6] = true;
+            current[6] = false;
             break;
         }
         // R key to D keypad
         case SDLK_r: {
-            pressed[13] = true;
+            current[13] = false;
             break;
         }
         // A key to 7 keypad
         case SDLK_a: {
-            pressed[7] = true;
+            current[7] = false;
             break;
         }
         // S key to 8 keypad
         case SDLK_s: {
-            pressed[8] = true;
+            current[8] = false;
             break;
         }
         // D key to 9 keypad
         case SDLK_d: {
-            pressed[9] = true;
+            current[9] = false;
             break;
         }
         // F key to E keypad
         case SDLK_f: {
-            pressed[14] = true;
+            current[14] = false;
             break;
         }
         // Z key to A keypad
         case SDLK_z: {
-            pressed[10] = true;
+            current[10] = false;
             break;
         }
         // X key to 0 keypad
         case SDLK_x: {
-            pressed[0] = true;
+            current[0] = false;
             break;
         }
         // C key to B keypad
         case SDLK_c: {
-            pressed[11] = true;
+            current[11] = false;
             break;
         }
         // V key to F keypad
         case SDLK_v: {
-            pressed[15] = true;
+            current[15] = false;
             break;
         }
     }
 }
 
-bool Keypad::isPressed(uint8_t button) const{
-    return buttons[button];
+bool Keypad::isPressed(uint8_t button){
+    return current[button];
+}
+
+void Keypad::updatePrevious(){
+    for(int i = 0; i < 0xF; i++){
+        previous[i] = current[i];
+    }
 }
 
 bool Keypad::beenPressed(uint8_t button){
-    if(pressed[button]){
-        pressed[button] = false;
+    if(previous[button] != current[button]){
         return true;
     }
 
