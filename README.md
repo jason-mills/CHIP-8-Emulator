@@ -38,10 +38,10 @@ These are the general resources that I used to complete this project.
 I used this guide as my primary resource for building the project. I followed most of the recomendations that this article made.\
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 
-Timendus's chip8-test-suite is the most exhaustive test for correct behavior that I found.
+Timendus's chip8-test-suite is the most exhaustive test for correct behavior that I found.\
 https://github.com/Timendus/chip8-test-suite
 
-The Emulator Development Discord can be found here.
+The Emulator Development Discord can be found here.\
 https://discord.com/invite/7nuaqZ2
 
 This set of tutorials was useful for learning various SDL features.\
