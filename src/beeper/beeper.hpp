@@ -10,10 +10,11 @@ public:
     Beeper();
     ~Beeper();
 
-    void play();
-    void stop();
+    void play() const;
+    void stop() const;
 
 private:
-    const std::string beepFile = "assets/100.wav";
-    Mix_Music* beepSound;
+    static constexpr std::string beepFile = "assets/100.wav";
+    Mix_Chunk* beepSound;
+    int beepChannel;
 };
