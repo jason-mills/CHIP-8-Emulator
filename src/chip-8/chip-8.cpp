@@ -288,7 +288,7 @@ void Chip8::execute(){
                 case 0x33:{
                     uint8_t number = varRegisters[secondNibble];
                     
-                    for(uint8_t i = 2; i-- >= 0;){
+                    for(int i = 2; i >= 0; i--){
                         memory[iRegister + i] = number % 10;
                         number /= 10;
                     }
