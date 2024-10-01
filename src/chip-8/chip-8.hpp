@@ -5,15 +5,16 @@
 #include "keypad.hpp"
 #include "beeper.hpp"
 #include "filemanager.hpp"
+#include <iostream>
 
 #include <stack>
 
 class Chip8{
 public:
-    Chip8(Display* aDisplay, Keypad* aKeypad, Beeper* aBeeper, std::string alternativeFontPath);
+    Chip8(Display& aDisplay, Keypad& aKeypad, const Beeper& aBeeper, const std::string& alternativeFontPath);
 
-    bool loadFont();
-    bool loadProgram(std::string programPath);
+    bool loadFont(const std::string& alternativeFontPath);
+    bool loadProgram(const std::string& programPath);
 
     uint16_t fetch();
     void execute();
@@ -22,11 +23,10 @@ public:
 
 private:
     DefaultFont defaultFont;
-    std::string alternativeFontPath = "";
 
-    Display* display;
-    Keypad* keypad;
-    Beeper* beeper;
+    Display& display;
+    Keypad& keypad;
+    const Beeper& beeper;
     FileManager fileManager;
 
     std::stack<uint16_t> stack;

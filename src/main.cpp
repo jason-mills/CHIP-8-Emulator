@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "chip-8.hpp"
 #include "display.hpp"
 #include "keypad.hpp"
@@ -9,7 +13,7 @@
 
 int main(int argc, char* argv[]){
     int windowWidth = 0;
-    double clockSpeed = (double)1/500;
+    double clockSpeed = 1./500;
     std::string programPath = "", fontPath = "";
     
     HelpText helpText;
@@ -35,7 +39,7 @@ int main(int argc, char* argv[]){
                 break;
             }
             case 'c':{
-                clockSpeed = (1 / (std::atof(optarg)));
+                clockSpeed = (1. / (std::atof(optarg)));
 
                 break;
             }
@@ -64,9 +68,9 @@ int main(int argc, char* argv[]){
     }
 
     Keypad keypad;
-    Display display(&keypad, windowWidth);
+    Display display(keypad, windowWidth);
     Beeper beeper;
-    Chip8 chip8(&display, &keypad, &beeper, fontPath);
+    Chip8 chip8(display, keypad, beeper, fontPath);
     chip8.loadProgram(programPath);
 
     using namespace std::chrono;
@@ -74,9 +78,9 @@ int main(int argc, char* argv[]){
     auto clockLimit = duration_cast<system_clock::duration>(duration<double>(clockSpeed));
     auto clockStart = system_clock::now();
 
-    auto fpsLimit = duration_cast<system_clock::duration>(duration<double>(1/60));
+    auto fpsLimit = duration_cast<system_clock::duration>(duration<double>(1./60));
     auto frameStart = system_clock::now();
-
+    size_t i = 0;
     while(display.isRunning()){
         display.processEvents();
 
@@ -94,7 +98,6 @@ int main(int argc, char* argv[]){
 
             frameStart = system_clock::now();
         }
-
     }
 
     return 0;

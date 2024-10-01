@@ -1,6 +1,6 @@
 #include "filemanager.hpp"
 
-bool FileManager::readFile(std::string path, char* memory, size_t start, size_t end){
+bool FileManager::readFile(const std::string& path, char* memory, size_t start, size_t end){
     std::ifstream file(path, std::ios::in | std::ios::binary | std::ios::ate);
 
     if(file.is_open()){

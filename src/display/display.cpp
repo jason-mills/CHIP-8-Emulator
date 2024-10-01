@@ -1,6 +1,6 @@
 #include "display.hpp"
 
-Display::Display(Keypad* aKeypad, int width) : keypad(aKeypad) {
+Display::Display(Keypad& aKeypad, int width) : keypad(aKeypad) {
     if(SDL_Init(SDL_INIT_VIDEO) < 0) throw "SDL could not initialize video";
 
     if(width == -1){
@@ -8,7 +8,7 @@ Display::Display(Keypad* aKeypad, int width) : keypad(aKeypad) {
         if(window == nullptr) throw "SDL could not create window";
     }
     else if(width == 0){
-        window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, defaultWidth, defaultHeight, 0);
+        window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, defaultWidth, defaultHeight, SDL_WINDOW_RESIZABLE);
         if(window == nullptr) throw "SDL could not create window";
     }
     else{
@@ -17,7 +17,7 @@ Display::Display(Keypad* aKeypad, int width) : keypad(aKeypad) {
         if(window == nullptr) throw "SDL could not create window";
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if(renderer == nullptr) throw "SDL could not create renderer";
     
     texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 64, 32);
@@ -52,12 +52,12 @@ void Display::processEvents(){
                 break;
             }
             case SDL_KEYDOWN:{
-                keypad->handleKeypress(event, true);
+                keypad.handleKeypress(event, true);
                 break;
             }
             case SDL_KEYUP:{
-                keypad->handleKeypress(event, false);
-                keypad->handleKeyup(event);
+                keypad.handleKeypress(event, false);
+                keypad.handleKeyup(event);
                 break;
             }
         }
@@ -94,7 +94,6 @@ bool Display::loadSprite(int8_t x, uint8_t y, uint8_t sprite[], uint8_t length){
     int xReset = x;
 
     SDL_SetRenderTarget(renderer, texture);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     for(uint8_t i = 0; i < length; i++){
         bitmask = 0x80;
@@ -106,11 +105,11 @@ bool Display::loadSprite(int8_t x, uint8_t y, uint8_t sprite[], uint8_t length){
 
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderDrawPoint(renderer, x, y);
-                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
                     pixels[y][x] = false;
                 }
                 else{
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                     SDL_RenderDrawPoint(renderer, x, y);
                     pixels[y][x] = true;
                 }
@@ -132,4 +131,3 @@ bool Display::loadSprite(int8_t x, uint8_t y, uint8_t sprite[], uint8_t length){
 
     return pixelOverwritten;
 }
-

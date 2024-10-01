@@ -183,7 +183,7 @@ void Keypad::handleKeyup(SDL_Event event){
     }
 }
 
-bool Keypad::isPressed(uint8_t button){
+bool Keypad::isPressed(uint8_t button) const{
     return buttons[button];
 }
 

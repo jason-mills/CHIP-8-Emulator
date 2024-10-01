@@ -6,7 +6,7 @@
 
 class Display{
 public:
-    Display(Keypad* aKeypad, int width = 0);
+    Display(Keypad& aKeypad, int width = 0);
     ~Display();
 
     void processEvents();
@@ -22,7 +22,7 @@ private:
     const int defaultWidth = 640;
     const int defaultHeight = 320;
 
-    Keypad* keypad;
+    Keypad& keypad;
 
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;

@@ -7,7 +7,7 @@ public:
     void handleKeypress(SDL_Event event, bool pressed);
     void handleKeyup(SDL_Event event);
 
-    bool isPressed(uint8_t button);
+    bool isPressed(uint8_t button) const;
     bool beenPressed(uint8_t button);
 
 private:

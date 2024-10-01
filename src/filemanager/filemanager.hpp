@@ -5,5 +5,5 @@
 
 class FileManager{
 public:
-    bool readFile(std::string path, char* memory, size_t start, size_t end);
+    bool readFile(const std::string& path, char* memory, size_t start, size_t end);
 };
